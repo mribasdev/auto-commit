@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Check, Loader2, GitCommit } from "lucide-react"
+import { Check, Loader2, GitCommit } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/use-toast"
 
 export function TestCommitButton() {
   const [isLoading, setIsLoading] = useState(false)
@@ -28,10 +28,10 @@ export function TestCommitButton() {
       } else {
         throw new Error(data.error || "Failed to create commit")
       }
-    } catch (error) {
+    } catch (err) {
       toast({
         title: "Error",
-        description: "Failed to create test commit. Please try again.",
+        description: err instanceof Error ? err.message : "Failed to create test commit. Please try again.",
         variant: "destructive",
       })
     } finally {
@@ -41,8 +41,16 @@ export function TestCommitButton() {
 
   return (
     <div className="space-y-4">
-      <Button onClick={handleTestCommit} disabled={isLoading} className="w-full sm:w-auto">
-        {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GitCommit className="mr-2 h-4 w-4" />}
+      <Button
+        onClick={handleTestCommit}
+        disabled={isLoading}
+        className="w-full sm:w-auto"
+      >
+        {isLoading ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <GitCommit className="mr-2 h-4 w-4" />
+        )}
         Create Test Commit
       </Button>
       {lastCommitTime && (
@@ -54,4 +62,3 @@ export function TestCommitButton() {
     </div>
   )
 }
-
